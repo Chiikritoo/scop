@@ -15,7 +15,8 @@ make clean  # remove object files
 make fclean # remove object files + binary
 ```
 
-No external dependencies yet — plain C++17.
+Dependencies: GLFW (via `pkg-config`), OpenGL. GLAD (OpenGL loader) is
+vendored in `vendor/glad/`, no install needed.
 
 ## Run
 

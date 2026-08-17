@@ -8,5 +8,6 @@ implementation progresses, not written ahead of it.
 ```
 src/main.cpp          Entry point
 include/scop.hpp      Project umbrella header
+vendor/glad/           Vendored OpenGL loader (generated, not hand-written)
 docs/                 Human-facing documentation
 ```

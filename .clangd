@@ -2,6 +2,8 @@ CompileFlags:
   Add:
     - -I
     - /home/anchikri/Documents/42/42advanced/scop/include
+    - -I
+    - /home/anchikri/Documents/42/42advanced/scop/vendor/glad/include
     - -std=c++17
     - -Wall
     - -Wextra
