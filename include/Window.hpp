@@ -1,33 +1,35 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.cpp                                           :+:      :+:    :+:   */
+/*   Window.hpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: anchikri <anchikri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/08/17 19:26:20 by anchikri          #+#    #+#             */
-/*   Updated: 2026/08/17 19:26:22 by anchikri         ###   ########.fr       */
+/*   Created: 2026/08/17 19:26:48 by anchikri          #+#    #+#             */
+/*   Updated: 2026/08/17 19:27:07 by anchikri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "scop.hpp"
-#include "Window.hpp"
+#ifndef WINDOW_HPP
+# define WINDOW_HPP
 
-int	main(void)
+# include "scop.hpp"
+
+class Window
 {
-	try {
-		Window	window(800, 600, "scop");
+	public:
+		Window(int width, int height, const char *title);
+		~Window();
 
-		while (!window.shouldClose()) {
-			window.pollEvents();
-			glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
-			glClear(GL_COLOR_BUFFER_BIT);
-			window.swapBuffers();
-		}
-	} catch (const std::exception &e) {
-		std::cerr << e.what() << std::endl;
-		return (1);
-	}
+		Window(const Window &other) = delete;
+		Window &operator=(const Window &other) = delete;
 
-	return (0);
-}
+		bool	shouldClose() const;
+		void	pollEvents() const;
+		void	swapBuffers() const;
+
+	private:
+		GLFWwindow	*_window;
+};
+
+#endif
