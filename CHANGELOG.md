@@ -13,3 +13,9 @@ Format based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
   functions via GLAD, exposes `shouldClose`/`pollEvents`/`swapBuffers`.
 - `main.cpp` opens a window and clears it to a solid color every frame.
 - Project documentation: README, `docs/ARCHITECTURE.md`, `docs/devlog.md`.
+- `Shader` class (RAII): compiles GLSL vertex/fragment shaders from disk
+  and links them into a program, throwing on failure.
+- `shaders/basic.vert` / `shaders/basic.frag`: minimal pass-through
+  shaders (flat orange fragment color).
+- `main.cpp` now uploads a hardcoded triangle via VAO/VBO and draws it
+  each frame using the `Shader` class — first visible render output.

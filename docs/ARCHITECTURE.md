@@ -8,8 +8,11 @@ implementation progresses, not written ahead of it.
 ```
 src/main.cpp           Entry point
 src/Window.cpp          GLFW/GL window + context, RAII
+src/Shader.cpp           GLSL shader compilation + program linking, RAII
 include/scop.hpp       Project umbrella header
 include/Window.hpp      Window class declaration
+include/Shader.hpp       Shader class declaration
+shaders/                GLSL source files (.vert/.frag), loaded at runtime
 vendor/glad/            Vendored OpenGL loader (generated, not hand-written)
 docs/                  Human-facing documentation
 ```
