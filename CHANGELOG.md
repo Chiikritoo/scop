@@ -19,3 +19,13 @@ Format based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
   shaders (flat orange fragment color).
 - `main.cpp` now uploads a hardcoded triangle via VAO/VBO and draws it
   each frame using the `Shader` class — first visible render output.
+
+### Changed
+- `shaders/basic.vert` / `shaders/basic.frag`: added a second vertex
+  attribute (`aColor`) passed through as `ourColor` from vertex to
+  fragment shader, replacing the hardcoded flat color.
+- `main.cpp`: interleaved vertex data (position + color) in a single
+  VBO, with two `glVertexAttribPointer` calls (stride/offset) instead
+  of one — revisiting the LearnOpenGL "Hello Triangle" / "Shaders"
+  chapters to nail down attribute layout and GLSL in/out passing,
+  which weren't solid on the first pass.

@@ -17,3 +17,23 @@ on any compile/link failure instead of leaving a half-built object
 around. Wired it into `main.cpp` alongside a hardcoded triangle
 (VAO/VBO) to validate the whole pipeline end to end — first pixels on
 screen.
+
+## 2026-08-18
+
+Went back over the LearnOpenGL "Hello Triangle" and "Shaders" chapters
+— the basics weren't solid enough after the first pass, so spent the
+day re-doing the fundamentals properly instead of building on top of a
+shaky understanding.
+
+Extended the triangle with a per-vertex color attribute: `aColor`
+alongside `aPos` in the VBO, interleaved (`pos, color, pos, color, …`)
+rather than in two separate buffers, to get comfortable with
+`glVertexAttribPointer`'s stride/offset arguments. Updated
+`basic.vert`/`basic.frag` to pass the color through as an `out`/`in`
+`vec3` (`ourColor`) — first real use of GLSL's shader-to-shader
+interface instead of a hardcoded fragment color.
+
+Left commented-out snippets in `main.cpp` (EBO/indices, wireframe
+mode, uniform-driven color animation via `glfwGetTime`) as scratch
+notes while working through the tutorial's variations — to be cleaned
+up once the next chapter's actual code lands.
