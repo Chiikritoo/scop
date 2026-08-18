@@ -1,0 +1,90 @@
+<svg width="900" height="1720" viewBox="0 0 900 1720" xmlns="http://www.w3.org/2000/svg" font-family="Helvetica, Arial, sans-serif">
+  <rect x="0" y="0" width="900" height="1720" fill="#ffffff"/>
+
+  <text x="450" y="45" text-anchor="middle" font-size="24" font-weight="bold" fill="#1a1a1a">Du code a l'ecran : le chemin complet</text>
+  <text x="450" y="70" text-anchor="middle" font-size="13" fill="#666666">Noms reels des composants (Linux / DRM). Sous Windows, le sous-systeme equivalent est WDDM.</text>
+
+  <!-- Legend -->
+  <rect x="580" y="95" width="18" height="18" rx="3" fill="#d6cdf2" stroke="#6a4fc9" stroke-width="1"/>
+  <text x="605" y="109" font-size="13" fill="#1a1a1a">Espace utilisateur (user-space)</text>
+  <rect x="580" y="120" width="18" height="18" rx="3" fill="#f7d9c4" stroke="#c96a25" stroke-width="1"/>
+  <text x="605" y="134" font-size="13" fill="#1a1a1a">Espace noyau (kernel-space)</text>
+  <rect x="580" y="145" width="18" height="18" rx="3" fill="#cfe8de" stroke="#2c8a63" stroke-width="1"/>
+  <text x="605" y="159" font-size="13" fill="#1a1a1a">Materiel (GPU)</text>
+
+  <defs>
+    <marker id="arrow2" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M1 1L9 5L1 9" fill="none" stroke="#555555" stroke-width="1.6"/>
+    </marker>
+  </defs>
+
+  <!-- 1: application code -->
+  <rect x="130" y="180" width="640" height="80" rx="10" fill="#d6cdf2" stroke="#6a4fc9" stroke-width="1.2"/>
+  <text x="450" y="208" text-anchor="middle" font-size="16" font-weight="bold" fill="#2e1f5c">1. Ton programme</text>
+  <text x="450" y="230" text-anchor="middle" font-size="12.5" fill="#2e1f5c">glDrawArrays(GL_TRIANGLES, 0, 3) - un appel de fonction ordinaire</text>
+  <text x="450" y="248" text-anchor="middle" font-size="12.5" fill="#2e1f5c">Processus isole, memoire virtuelle, aucun acces materiel direct</text>
+  <line x1="450" y1="260" x2="450" y2="288" stroke="#555555" stroke-width="1.6" marker-end="url(#arrow2)"/>
+
+  <!-- 2: libGL / Mesa -->
+  <rect x="130" y="290" width="640" height="90" rx="10" fill="#d6cdf2" stroke="#6a4fc9" stroke-width="1.2"/>
+  <text x="450" y="318" text-anchor="middle" font-size="16" font-weight="bold" fill="#2e1f5c">2. libGL (Mesa, ou driver proprietaire NVIDIA)</text>
+  <text x="450" y="340" text-anchor="middle" font-size="12.5" fill="#2e1f5c">Valide tes parametres, genere les erreurs GL_INVALID_*</text>
+  <text x="450" y="358" text-anchor="middle" font-size="12.5" fill="#2e1f5c">Traduit l'appel en commandes, les empile dans un command buffer (user-space)</text>
+  <line x1="450" y1="380" x2="450" y2="408" stroke="#555555" stroke-width="1.6" marker-end="url(#arrow2)"/>
+
+  <!-- boundary -->
+  <rect x="130" y="410" width="640" height="36" rx="6" fill="#f2f2f2" stroke="#aaaaaa" stroke-width="1" stroke-dasharray="4 4"/>
+  <text x="450" y="433" text-anchor="middle" font-size="12.5" fill="#555555">Frontiere user-space / kernel-space : appel systeme ioctl()</text>
+  <line x1="450" y1="446" x2="450" y2="474" stroke="#555555" stroke-width="1.6" marker-end="url(#arrow2)"/>
+
+  <!-- 3: DRM/GEM -->
+  <rect x="130" y="476" width="640" height="110" rx="10" fill="#f7d9c4" stroke="#c96a25" stroke-width="1.2"/>
+  <text x="450" y="504" text-anchor="middle" font-size="16" font-weight="bold" fill="#5c2e0d">3. DRM (Direct Rendering Manager) - sous-systeme noyau Linux</text>
+  <text x="450" y="526" text-anchor="middle" font-size="12.5" fill="#5c2e0d">GEM (Graphics Execution Manager) : alloue et suit les buffers memoire GPU</text>
+  <text x="450" y="544" text-anchor="middle" font-size="12.5" fill="#5c2e0d">Verifie les droits, gere la synchronisation (fences) entre CPU et GPU</text>
+  <text x="450" y="562" text-anchor="middle" font-size="12.5" fill="#5c2e0d">Ecrit les commandes dans un command ring buffer partage avec le GPU</text>
+  <line x1="450" y1="586" x2="450" y2="614" stroke="#555555" stroke-width="1.6" marker-end="url(#arrow2)"/>
+
+  <!-- 4: DMA + PCIe -->
+  <rect x="130" y="616" width="640" height="90" rx="10" fill="#f7d9c4" stroke="#c96a25" stroke-width="1.2"/>
+  <text x="450" y="644" text-anchor="middle" font-size="16" font-weight="bold" fill="#5c2e0d">4. Controleur DMA + Bus PCIe</text>
+  <text x="450" y="666" text-anchor="middle" font-size="12.5" fill="#5c2e0d">Le CPU programme le DMA puis repart : la copie RAM -&gt; VRAM se fait sans lui</text>
+  <text x="450" y="684" text-anchor="middle" font-size="12.5" fill="#5c2e0d">Transport physique sur le bus PCIe (PCIe 4.0 x16 ~ 32 Go/s par sens)</text>
+  <line x1="450" y1="706" x2="450" y2="734" stroke="#555555" stroke-width="1.6" marker-end="url(#arrow2)"/>
+
+  <!-- 5: GPU scheduler + command processor -->
+  <rect x="130" y="736" width="640" height="90" rx="10" fill="#cfe8de" stroke="#2c8a63" stroke-width="1.2"/>
+  <text x="450" y="764" text-anchor="middle" font-size="16" font-weight="bold" fill="#0f4a30">5. Scheduler GPU + Command Processor</text>
+  <text x="450" y="786" text-anchor="middle" font-size="12.5" fill="#0f4a30">Lit le ring buffer, ordonnance le travail entre plusieurs applications</text>
+  <text x="450" y="804" text-anchor="middle" font-size="12.5" fill="#0f4a30">Distribue les taches aux Streaming Multiprocessors (SM)</text>
+  <line x1="450" y1="826" x2="450" y2="854" stroke="#555555" stroke-width="1.6" marker-end="url(#arrow2)"/>
+
+  <!-- 6: pipeline -->
+  <rect x="130" y="856" width="640" height="80" rx="10" fill="#cfe8de" stroke="#2c8a63" stroke-width="1.2"/>
+  <text x="450" y="884" text-anchor="middle" font-size="16" font-weight="bold" fill="#0f4a30">6. Pipeline graphique</text>
+  <text x="450" y="906" text-anchor="middle" font-size="12.5" fill="#0f4a30">Les 9 etapes du schema "opengl_pipeline.svg" (voir fichier associe)</text>
+  <text x="450" y="924" text-anchor="middle" font-size="12.5" fill="#0f4a30">Sortie : une image ecrite dans le framebuffer, en VRAM</text>
+  <line x1="450" y1="936" x2="450" y2="964" stroke="#555555" stroke-width="1.6" marker-end="url(#arrow2)"/>
+
+  <!-- 7: swap -->
+  <rect x="130" y="966" width="640" height="90" rx="10" fill="#f7d9c4" stroke="#c96a25" stroke-width="1.2"/>
+  <text x="450" y="994" text-anchor="middle" font-size="16" font-weight="bold" fill="#5c2e0d">7. KMS (Kernel Mode Setting) + swap</text>
+  <text x="450" y="1016" text-anchor="middle" font-size="12.5" fill="#5c2e0d">glfwSwapBuffers() echange le buffer "back" fini avec le "front" affiche</text>
+  <text x="450" y="1034" text-anchor="middle" font-size="12.5" fill="#5c2e0d">Le noyau pilote le controleur d'affichage (scanout) vers le connecteur ecran</text>
+  <line x1="450" y1="1056" x2="450" y2="1084" stroke="#555555" stroke-width="1.6" marker-end="url(#arrow2)"/>
+
+  <!-- 8: screen -->
+  <rect x="130" y="1086" width="640" height="70" rx="10" fill="#e6e6e6" stroke="#8a8a8a" stroke-width="1.2"/>
+  <text x="450" y="1114" text-anchor="middle" font-size="16" font-weight="bold" fill="#1a1a1a">8. Ecran</text>
+  <text x="450" y="1136" text-anchor="middle" font-size="12.5" fill="#333333">Signal transmis par HDMI/DisplayPort, rafraichi au taux du moniteur</text>
+
+  <!-- Footer notes -->
+  <line x1="130" y1="1210" x2="770" y2="1210" stroke="#cccccc" stroke-width="1"/>
+  <text x="130" y="1240" font-size="12.5" fill="#333333">Notes de lecture :</text>
+  <text x="130" y="1262" font-size="12" fill="#333333">- Etape 2 a 4 sont totalement asynchrones : ton programme continue sans attendre la fin reelle du dessin.</text>
+  <text x="130" y="1282" font-size="12" fill="#333333">- glFinish() force une attente jusqu'a l'etape 5 inclue ; glFenceSync() permet une synchronisation plus fine et non bloquante.</text>
+  <text x="130" y="1302" font-size="12" fill="#333333">- Sous Windows, le driver traverse WDDM au lieu de DRM/GEM ; les concepts (ring buffer, scheduler, DMA) sont equivalents.</text>
+  <text x="130" y="1322" font-size="12" fill="#333333">- Sources : Linux Kernel GPU Driver Developer's Guide (kernel.org/doc/html), Khronos OpenGL Wiki.</text>
+
+  <text x="130" y="1370" font-size="12" fill="#999999">Schema construit pour l'apprentissage OpenGL - Anis, 2026</text>
+</svg>

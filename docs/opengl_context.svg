@@ -1,0 +1,96 @@
+<svg width="960" height="1400" viewBox="0 0 960 1400" xmlns="http://www.w3.org/2000/svg" font-family="Helvetica, Arial, sans-serif">
+  <rect x="0" y="0" width="960" height="1400" fill="#ffffff"/>
+
+  <text x="480" y="45" text-anchor="middle" font-size="24" font-weight="bold" fill="#1a1a1a">Le contexte OpenGL</text>
+  <text x="480" y="70" text-anchor="middle" font-size="13" fill="#666666">Verifie contre Khronos OpenGL Wiki : "OpenGL Context", "OpenGL Object", "Portal:OpenGL Concepts/State"</text>
+
+  <!-- Outer context box -->
+  <rect x="60" y="100" width="840" height="960" rx="16" fill="#f5f3ff" stroke="#6a4fc9" stroke-width="1.5"/>
+  <text x="90" y="130" font-size="17" font-weight="bold" fill="#2e1f5c">Un contexte GL = toute l'instance OpenGL de ce thread</text>
+  <text x="90" y="150" font-size="12" fill="#5c4a99">Detruire le contexte detruit tout ce qu'il contient. Un seul contexte "courant" par thread a la fois.</text>
+
+  <!-- Region A: binding points -->
+  <rect x="90" y="170" width="500" height="360" rx="12" fill="#ffffff" stroke="#3577c9" stroke-width="1.2"/>
+  <text x="110" y="196" font-size="15" font-weight="bold" fill="#0d2b4d">Binding points (pointeurs internes)</text>
+  <text x="110" y="214" font-size="11.5" fill="#444444">"Bind" = ecrire l'id de l'objet dans ce pointeur. Bind 0 = NULL.</text>
+
+  <rect x="108" y="226" width="464" height="30" rx="5" fill="#e9f1fb"/>
+  <text x="118" y="245" font-size="12.5" fill="#0d2b4d">GL_ARRAY_BUFFER  -&gt;  id du VBO courant</text>
+
+  <rect x="108" y="260" width="464" height="30" rx="5" fill="#e9f1fb"/>
+  <text x="118" y="279" font-size="12.5" fill="#0d2b4d">GL_ELEMENT_ARRAY_BUFFER  -&gt;  id de l'EBO courant</text>
+
+  <rect x="108" y="294" width="464" height="30" rx="5" fill="#e9f1fb"/>
+  <text x="118" y="313" font-size="12.5" fill="#0d2b4d">GL_VERTEX_ARRAY  -&gt;  id du VAO courant</text>
+
+  <rect x="108" y="328" width="464" height="30" rx="5" fill="#e9f1fb"/>
+  <text x="118" y="347" font-size="12.5" fill="#0d2b4d">GL_TEXTURE_2D (par unite de texture 0..N)  -&gt;  id texture</text>
+
+  <rect x="108" y="362" width="464" height="30" rx="5" fill="#e9f1fb"/>
+  <text x="118" y="381" font-size="12.5" fill="#0d2b4d">GL_FRAMEBUFFER  -&gt;  id du FBO courant (0 = defaut)</text>
+
+  <rect x="108" y="396" width="464" height="30" rx="5" fill="#e9f1fb"/>
+  <text x="118" y="415" font-size="12.5" fill="#0d2b4d">GL_UNIFORM_BUFFER, GL_PIXEL_UNPACK_BUFFER, ...</text>
+
+  <rect x="108" y="430" width="464" height="34" rx="5" fill="#d6cdf2"/>
+  <text x="118" y="451" font-size="12.5" fill="#2e1f5c" font-weight="bold">Programme courant (glUseProgram)  -&gt;  id du program actif</text>
+
+  <text x="110" y="490" font-size="12" fill="#444444" font-style="italic">Consequence directe : glVertexAttribPointer() n'a aucun</text>
+  <text x="110" y="508" font-size="12" fill="#444444" font-style="italic">parametre "buffer" - il lit silencieusement GL_ARRAY_BUFFER.</text>
+
+  <!-- Region B: global state -->
+  <rect x="610" y="170" width="320" height="360" rx="12" fill="#ffffff" stroke="#c96a25" stroke-width="1.2"/>
+  <text x="630" y="196" font-size="15" font-weight="bold" fill="#5c2e0d">Etat global (valeurs simples)</text>
+
+  <rect x="628" y="212" width="284" height="26" rx="5" fill="#f7e4d3"/>
+  <text x="638" y="229" font-size="12" fill="#5c2e0d">Viewport (x, y, largeur, hauteur)</text>
+  <rect x="628" y="242" width="284" height="26" rx="5" fill="#f7e4d3"/>
+  <text x="638" y="259" font-size="12" fill="#5c2e0d">Clear color (glClearColor)</text>
+  <rect x="628" y="272" width="284" height="26" rx="5" fill="#f7e4d3"/>
+  <text x="638" y="289" font-size="12" fill="#5c2e0d">Depth test on/off + fonction de comparaison</text>
+  <rect x="628" y="302" width="284" height="26" rx="5" fill="#f7e4d3"/>
+  <text x="638" y="319" font-size="12" fill="#5c2e0d">Blend on/off + facteurs de melange</text>
+  <rect x="628" y="332" width="284" height="26" rx="5" fill="#f7e4d3"/>
+  <text x="638" y="349" font-size="12" fill="#5c2e0d">Face culling on/off + sens (CW/CCW)</text>
+  <rect x="628" y="362" width="284" height="26" rx="5" fill="#f7e4d3"/>
+  <text x="638" y="379" font-size="12" fill="#5c2e0d">Scissor test, stencil, polygon mode...</text>
+
+  <text x="630" y="415" font-size="12" fill="#444444" font-style="italic">Ce sont des valeurs, pas des objets :</text>
+  <text x="630" y="433" font-size="12" fill="#444444" font-style="italic">pas de glGen*/glBind* pour celles-ci,</text>
+  <text x="630" y="451" font-size="12" fill="#444444" font-style="italic">juste glEnable / glDisable / set direct.</text>
+
+  <!-- Region C: default framebuffer -->
+  <rect x="90" y="550" width="840" height="90" rx="12" fill="#e6e6e6" stroke="#8a8a8a" stroke-width="1.2"/>
+  <text x="110" y="578" font-size="15" font-weight="bold" fill="#1a1a1a">Le framebuffer par defaut</text>
+  <text x="110" y="600" font-size="12.5" fill="#333333">Le contexte represente aussi la surface visible (fenetre) associee - celle utilisee</text>
+  <text x="110" y="618" font-size="12.5" fill="#333333">quand aucun FBO custom n'est bind (id = 0 sur GL_FRAMEBUFFER).</text>
+
+  <!-- Region D: objects belonging to context -->
+  <rect x="90" y="660" width="840" height="220" rx="12" fill="#eaf3de" stroke="#639922" stroke-width="1.2"/>
+  <text x="110" y="686" font-size="15" font-weight="bold" fill="#345212">Objets qui appartiennent a ce contexte</text>
+  <text x="110" y="704" font-size="12" fill="#345212">Chaque objet cree (glGenBuffers, glCreateShader, glGenTextures...) vit dans ce contexte.</text>
+
+  <rect x="108" y="718" width="380" height="60" rx="8" fill="#ffffff" stroke="#639922" stroke-width="1"/>
+  <text x="298" y="740" text-anchor="middle" font-size="13" font-weight="bold" fill="#345212">Partageables entre contextes</text>
+  <text x="298" y="760" text-anchor="middle" font-size="11.5" fill="#345212">Buffers, Textures, Shaders/Programs, Sync</text>
+
+  <rect x="500" y="718" width="330" height="60" rx="8" fill="#ffffff" stroke="#c94040" stroke-width="1"/>
+  <text x="665" y="740" text-anchor="middle" font-size="13" font-weight="bold" fill="#7a2020">Jamais partageables</text>
+  <text x="665" y="760" text-anchor="middle" font-size="11.5" fill="#7a2020">Container Objects (VAO, FBO), Query Objects</text>
+
+  <text x="110" y="800" font-size="12" fill="#345212">Le partage n'est pas automatique : il doit etre demande explicitement</text>
+  <text x="110" y="818" font-size="12" fill="#345212">a la creation d'un contexte (utile pour le chargement asynchrone de ressources).</text>
+
+  <text x="110" y="850" font-size="12" fill="#345212">Un objet non bind n'existe que dans la table du contexte : impossible de le modifier</text>
+  <text x="110" y="868" font-size="12" fill="#345212">sans d'abord le bind (sauf Program Pipeline et Sampler Objects, exceptions notees par Khronos).</text>
+
+  <!-- Footer notes -->
+  <line x1="90" y1="920" x2="930" y2="920" stroke="#cccccc" stroke-width="1"/>
+  <text x="90" y="950" font-size="13" fill="#333333" font-weight="bold">Notes de lecture :</text>
+  <text x="90" y="972" font-size="12" fill="#333333">- "Le contexte courant" est une variable thread-local : chaque thread d'un process a son propre contexte actif.</text>
+  <text x="90" y="992" font-size="12" fill="#333333">- Un seul contexte ne peut pas etre courant sur deux threads en meme temps.</text>
+  <text x="90" y="1012" font-size="12" fill="#333333">- Un nom d'objet (GLuint) n'est jamais un pointeur : c'est une cle vers une table geree par le driver.</text>
+  <text x="90" y="1032" font-size="12" fill="#333333">- Source : Khronos OpenGL Wiki, pages "OpenGL Context", "OpenGL Object", "Portal:OpenGL Concepts/State" (khronos.org/opengl/wiki).</text>
+
+  <text x="90" y="1080" font-size="12" fill="#999999">Schema construit pour l'apprentissage OpenGL - Anis, 2026</text>
+</svg>
