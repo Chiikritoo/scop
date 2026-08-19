@@ -37,3 +37,35 @@ Left commented-out snippets in `main.cpp` (EBO/indices, wireframe
 mode, uniform-driven color animation via `glfwGetTime`) as scratch
 notes while working through the tutorial's variations — to be cleaned
 up once the next chapter's actual code lands.
+
+## 2026-08-19
+
+Kept following LearnOpenGL past the mandatory chapters — Textures,
+Transformations, Coordinate Systems, Camera — skipping a couple of
+sections that didn't seem worth the detour right now. The math side
+was rough. I know vectors and matrices in the abstract, but stacking
+that on top of writing our own `Vec3`/`Mat4` from scratch (no glm
+allowed anyway) made everything feel less like "apply a formula" and
+more like "figure out what this formula is even for." Worked through
+it with Claude's help, function by function, which suits how I learn
+better than reading the whole theory first before writing a line.
+
+`Vec3` and `Mat4` now exist for real: dot/cross/normalize on the
+vector side, scale/translate/rotate plus `perspective` and `lookAt`
+on the matrix side.
+
+Textures came next — `stb_image.h` vendored in, `container.jpg`
+loaded and bound as a `sampler2D`, UVs replacing the old per-vertex
+color in the shaders.
+
+Then the cube: swapped the triangle for 36 hardcoded vertices, wired
+`model`/`view`/`projection` uniforms, turned on depth testing so it
+doesn't render inside-out, and hooked `lookAt` to `glfwGetTime()` for
+a camera that orbits the object instead of a static view. First time
+something spins in 3D on screen instead of sitting flat — genuinely
+happy with that one.
+
+Coordinate systems, the camera basis, and homogeneous coordinates
+are still shaky in my head though — none of it feels actually
+acquired yet, more like it worked this time. I'll need to go back
+over this math regularly, not just once, before it really sticks.

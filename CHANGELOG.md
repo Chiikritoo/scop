@@ -29,3 +29,27 @@ Format based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
   of one — revisiting the LearnOpenGL "Hello Triangle" / "Shaders"
   chapters to nail down attribute layout and GLSL in/out passing,
   which weren't solid on the first pass.
+- `Vec3` and `Mat4` classes (`include/`, `src/`): our own vector/matrix
+  math, hand-rolled per the subject's constraints. `Vec3` covers
+  add/sub/negate/dot/cross/normalize/length; `Mat4` covers
+  scale/translate/rotateX/rotateZ, matrix multiplication, and the two
+  camera-facing builders, `perspective` and `lookAt`.
+- Vendored `stb_image.h` (`vendor/stb/`, header-only) for texture
+  loading, alongside the existing vendored GLAD loader; Makefile
+  updated with a matching `-I` include path.
+- Texture support: `shaders/basic.vert`/`basic.frag` now carry a `vec2`
+  UV attribute and sample a `sampler2D` instead of interpolating a flat
+  vertex color; `main.cpp` loads `container.jpg` via `stb_image` and
+  uploads it as a 2D texture.
+- `main.cpp` now draws a textured cube (36 hardcoded vertices) instead
+  of the flat triangle, driven by `model`/`view`/`projection` matrix
+  uniforms built with `Mat4`.
+- A simple orbiting camera: `view` is rebuilt every frame via
+  `Mat4::lookAt`, with the eye position swept around the origin using
+  `sin`/`cos` of `glfwGetTime()` — first moving/rotating 3D scene.
+- `glEnable(GL_DEPTH_TEST)` so the cube's faces occlude correctly.
+
+### Changed
+- `shaders/basic.vert`/`basic.frag`: dropped the per-vertex color
+  attribute in favor of texture coordinates; vertex shader now
+  transforms positions through `projection * view * model`.
