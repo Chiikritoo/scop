@@ -17,6 +17,7 @@ DEPS		= $(OBJS:.o=.d)
 GLAD_INC	= $(VENDOR_DIR)/glad/include
 GLAD_SRC	= $(VENDOR_DIR)/glad/src/gl.c
 GLAD_OBJ	= $(OBJ_DIR)/vendor/glad/gl.o
+STB_INC		= $(VENDOR_DIR)/stb
 
 OBJS		+= $(GLAD_OBJ)
 
@@ -30,7 +31,7 @@ else
 	GL_LIBS	= -lGL
 endif
 
-INCLUDES	= -I$(INC_DIR) -I$(GLAD_INC) $(PKG_CFLAGS)
+INCLUDES	= -I$(INC_DIR) -I$(GLAD_INC) -I$(STB_INC) $(PKG_CFLAGS)
 LDLIBS		= $(PKG_LIBS) $(GL_LIBS)
 
 BIN			= $(BIN_DIR)/$(NAME)
