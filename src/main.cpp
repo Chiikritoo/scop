@@ -6,7 +6,7 @@
 /*   By: anchikri <anchikri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/08/17 19:26:20 by anchikri          #+#    #+#             */
-/*   Updated: 2026/08/19 18:44:27 by anchikri         ###   ########.fr       */
+/*   Updated: 2026/08/24 15:53:25 by anchikri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -189,28 +189,27 @@ int main(void)
 		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
 		glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
 
-		glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+		// glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 
 
 		// unsigned int transformLoc = glGetUniformLocation(shader.getId(), "transform");
 		unsigned int transformLoc = glGetUniformLocation(shader.getId(), "transform");
 		shader.use();
-		Mat4 identity;
-		glUniformMatrix4fv(transformLoc, 1, GL_FALSE, &identity._m[0][0]);
+		math::Mat4 identity = math::identity();
+		glUniformMatrix4fv(transformLoc, 1, GL_FALSE, identity.data());
 
 
-		Mat4 model;
-		model = Mat4::rotateX(model, toRadians(-55.0f));
+		math::Mat4 model = math::rotateX(math::identity(), toRadians(-55.0f));
 
-		Mat4 projection = Mat4::perspective(toRadians(45.0f), 800.0f / 600.0f, 0.1f, 100.0f);
+		math::Mat4 projection = math::perspective(toRadians(45.0f), 800.0f / 600.0f, 0.1f, 100.0f);
 
 		int modelLoc = glGetUniformLocation(shader.getId(), "model");
 		int viewLoc = glGetUniformLocation(shader.getId(), "view");
 		int projLoc = glGetUniformLocation(shader.getId(), "projection");
 
 		shader.use();
-		glUniformMatrix4fv(modelLoc, 1, GL_FALSE, &model._m[0][0]);
-		glUniformMatrix4fv(projLoc, 1, GL_FALSE, &projection._m[0][0]);
+		glUniformMatrix4fv(modelLoc, 1, GL_FALSE, model.data());
+		glUniformMatrix4fv(projLoc, 1, GL_FALSE, projection.data());
 		glEnable(GL_DEPTH_TEST);
 
 		while (!window.shouldClose()) {
@@ -220,11 +219,11 @@ int main(void)
 
 			shader.use();
 
-			float radius = 10.0f;
+			float radius = 3.0f;
 			float camX = std::sin((float)glfwGetTime()) * radius;
 			float camZ = std::cos((float)glfwGetTime()) * radius;
-			Mat4 view = Mat4::lookAt(Vec3(camX, 0.0f, camZ), Vec3(0.0f, 0.0f, 0.0f), Vec3(0.0f, 1.0f, 0.0f));
-			glUniformMatrix4fv(viewLoc, 1, GL_FALSE, &view._m[0][0]);
+			math::Mat4 view = math::lookAt(math::Vec3{camX, 0.0f, camZ}, math::Vec3{0.0f, 0.0f, 0.0f}, math::Vec3{0.0f, 1.0f, 0.0f});
+			glUniformMatrix4fv(viewLoc, 1, GL_FALSE, view.data());
 
 			glBindVertexArray(VAO);
 			glBindTexture(GL_TEXTURE_2D, texture);
