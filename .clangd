@@ -4,6 +4,8 @@ CompileFlags:
     - /home/anchikri/Documents/42/42advanced/scop/include
     - -I
     - /home/anchikri/Documents/42/42advanced/scop/vendor/glad/include
+    - -I
+    - /home/anchikri/Documents/42/42advanced/scop/vendor/stb
     - -std=c++17
     - -Wall
     - -Wextra
