@@ -19,6 +19,8 @@ Format based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
   shaders (flat orange fragment color).
 - `main.cpp` now uploads a hardcoded triangle via VAO/VBO and draws it
   each frame using the `Shader` class — first visible render output.
+- `Vec4` (`include/`, `src/`): homogeneous 4-component vector, used
+  internally by `Mat4` for matrix/vector multiplication.
 
 ### Changed
 - `shaders/basic.vert` / `shaders/basic.frag`: added a second vertex
@@ -53,3 +55,20 @@ Format based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 - `shaders/basic.vert`/`basic.frag`: dropped the per-vertex color
   attribute in favor of texture coordinates; vertex shader now
   transforms positions through `projection * view * model`.
+- `Vec3`, `Vec4`, and `Mat4` (`include/`, `src/`): reworked into
+  `namespace math`, plain structs with public members instead of
+  classes with constructors, and every operation (`dot`, `cross`,
+  `normalize`, matrix multiplication, matrix/vector multiplication)
+  as a free function instead of a method. Matrix transforms split
+  into pure factories (`identity`, `translation`, `scaling`,
+  `rotationX`/`rotationY`/`rotationZ`, `perspective`) composed
+  explicitly via `operator*`, instead of combined build-and-apply
+  functions. Added `Mat4::data()` to expose a raw `const float*` for
+  `glUniformMatrix4fv`, since the internal storage is now private.
+  `main.cpp` updated to the new `math::` API.
+
+### Fixed
+- `perspective()`: two matrix coefficients were swapped
+  (`(row 2, col 3)` and `(row 3, col 2)`), projecting every vertex
+  outside the `[-1, 1]` clip range and leaving the screen blank after
+  the math rework above.

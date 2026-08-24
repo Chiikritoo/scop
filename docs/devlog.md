@@ -69,3 +69,26 @@ Coordinate systems, the camera basis, and homogeneous coordinates
 are still shaky in my head though — none of it feels actually
 acquired yet, more like it worked this time. I'll need to go back
 over this math regularly, not just once, before it really sticks.
+
+## 2026-08-24
+
+Same instinct as the OpenGL detour a few days back, but for the math
+side this time — I wanted to actually understand the mechanics instead
+of having something that just works. Took each notion apart one at a
+time. `lookAt` is still a bit fuzzy honestly, but the rest is clearer
+than last time.
+
+Refactored `Vec3`, `Vec4`, and `Mat4` for consistency: everything lives
+in `namespace math` now, plain structs with public members instead of
+classes with constructors, and every operation (`dot`, `cross`,
+`normalize`, matrix multiplication) is a free function instead of a
+method. Matrix transforms are also split into pure factories
+(`identity`, `translation`, `scaling`, `rotationX`/`Y`/`Z`,
+`perspective`) composed explicitly with `operator*`, instead of
+functions that build and apply in one call. `main.cpp` got readapted to
+match.
+
+Still the same spinning cube at the end of the day — or rather, the
+camera orbiting around it, `lookAt` does the same job as before, just
+cleaner underneath now. Wondering if a `Camera` class is worth it next,
+haven't decided yet.
