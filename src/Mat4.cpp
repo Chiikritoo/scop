@@ -6,7 +6,7 @@
 /*   By: anchikri <anchikri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/08/19 11:08:36 by anchikri          #+#    #+#             */
-/*   Updated: 2026/08/24 15:53:44 by anchikri         ###   ########.fr       */
+/*   Updated: 2026/08/25 09:56:59 by anchikri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -138,20 +138,20 @@ namespace math
 		Vec3 right = normalize(cross(up, direction));
 		Vec3 camUp = cross(direction, right);
 
-		Mat4 rotation = identity();
-		rotation(0, 0) = right.x;
-		rotation(0, 1) = right.y;
-		rotation(0, 2) = right.z;
+		Mat4 orientation = identity();
+		orientation(0, 0) = right.x;
+		orientation(0, 1) = right.y;
+		orientation(0, 2) = right.z;
 
-		rotation(1, 0) = camUp.x;
-		rotation(1, 1) = camUp.y;
-		rotation(1, 2) = camUp.z;
+		orientation(1, 0) = camUp.x;
+		orientation(1, 1) = camUp.y;
+		orientation(1, 2) = camUp.z;
 
-		rotation(2, 0) = direction.x;
-		rotation(2, 1) = direction.y;
-		rotation(2, 2) = direction.z;
+		orientation(2, 0) = direction.x;
+		orientation(2, 1) = direction.y;
+		orientation(2, 2) = direction.z;
 
-		return rotation * translation(-eye);
+		return orientation * translation(-eye);
 	}
 
 	Mat4 operator*(const Mat4& a, const Mat4& b)
