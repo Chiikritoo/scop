@@ -92,3 +92,21 @@ Still the same spinning cube at the end of the day — or rather, the
 camera orbiting around it, `lookAt` does the same job as before, just
 cleaner underneath now. Wondering if a `Camera` class is worth it next,
 haven't decided yet.
+
+## 2026-08-25
+
+`lookAt` makes a bit more sense now, though it's still not fully
+clicked in my head.
+
+Went with a `Camera` class in the end — position, front/right/up basis,
+a `move()` for basic WASD displacement. Following the LearnOpenGL
+"Camera" chapter and working through it with Claude, added yaw/pitch on
+top so the arrow keys can look around too. Rings a bell from cub3D,
+where I'd built this same yaw/pitch mechanic before, but I clearly need
+to go back over it — the "why" behind the sin/cos formulas isn't solid
+in my head yet.
+
+Also ran into a couple of things the math rework had left missing —
+no scalar multiplication or `+=`/`-=` on `Vec3`, no way to get the raw
+`GLFWwindow*` out of `Window`. Needed both before keyboard movement
+would even compile.

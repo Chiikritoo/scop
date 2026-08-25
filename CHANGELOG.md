@@ -21,6 +21,18 @@ Format based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
   each frame using the `Shader` class — first visible render output.
 - `Vec4` (`include/`, `src/`): homogeneous 4-component vector, used
   internally by `Mat4` for matrix/vector multiplication.
+- `Camera` class (`include/`, `src/`): owns position and orientation
+  basis (`front`/`up`/`right`), builds its `viewMatrix()` via
+  `math::lookAt`. `move()` handles WASD-style displacement along
+  `front`/`right`; `yaw()`/`pitch()` rotate the view (arrow keys),
+  recomputing the basis from the two angles each time. Wired into
+  `main.cpp`'s `processInput`, replacing the old scripted orbiting
+  camera with player-controlled movement and look, plus Escape to
+  close the window.
+- `Vec3`: `operator*(Vec3, float)`, `operator+=`, `operator-=` — needed
+  by `Camera::move`/`yaw`/`pitch`.
+- `Window::getWindow()`: exposes the underlying `GLFWwindow*`, needed
+  to poll keys with `glfwGetKey` from `main.cpp`.
 
 ### Changed
 - `shaders/basic.vert` / `shaders/basic.frag`: added a second vertex
