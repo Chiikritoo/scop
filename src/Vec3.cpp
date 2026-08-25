@@ -63,6 +63,25 @@ namespace math
         return Vec3{-v.x, -v.y, -v.z};
     }
 
+    Vec3 operator*(const Vec3& v, float scalar)
+    {
+        return Vec3{v.x * scalar, v.y * scalar, v.z * scalar};
+    }
+
+    Vec3& operator+=(Vec3& a, const Vec3& b)
+    {
+        a = a + b;
+
+        return a;
+    }
+
+    Vec3& operator-=(Vec3& a, const Vec3& b)
+    {
+        a = a - b;
+
+        return a;
+    }
+
     std::ostream& operator<<(std::ostream& os, const Vec3& v)
     {
         os << "[ " << v.x << ", " << v.y << ", " << v.z << " ]";

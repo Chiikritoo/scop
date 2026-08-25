@@ -33,6 +33,10 @@ namespace math
     Vec3 operator+(const Vec3& v, float scalar);
     Vec3 operator-(const Vec3& a, const Vec3& b);
     Vec3 operator-(const Vec3& v);
+    Vec3 operator*(const Vec3& v, float scalar);
+
+    Vec3& operator+=(Vec3& a, const Vec3& b);
+    Vec3& operator-=(Vec3& a, const Vec3& b);
 
     std::ostream& operator<<(std::ostream& os, const Vec3& v);
 }
