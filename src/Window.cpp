@@ -44,3 +44,8 @@ void	Window::swapBuffers() const
 {
 	glfwSwapBuffers(_window);
 }
+
+GLFWwindow	*Window::getWindow() const
+{
+	return (_window);
+}
