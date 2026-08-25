@@ -6,12 +6,13 @@
 /*   By: anchikri <anchikri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/08/17 19:26:20 by anchikri          #+#    #+#             */
-/*   Updated: 2026/08/24 15:53:25 by anchikri         ###   ########.fr       */
+/*   Updated: 2026/08/25 10:38:31 by anchikri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "Mat4.hpp"
 #include "Vec3.hpp"
+#include "Camera.hpp"
 #include "scop.hpp"
 #include "Window.hpp"
 #include "Shader.hpp"
@@ -22,6 +23,30 @@
 float toRadians(float degrees)
 {
     return degrees * (M_PI / 180.0f);
+}
+
+void processInput(GLFWwindow *window, Camera &camera, float deltaTime)
+{
+    if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
+        camera.move(CameraMovement::Forward, deltaTime);
+    if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS)
+        camera.move(CameraMovement::Backward, deltaTime);
+    if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS)
+        camera.move(CameraMovement::Left, deltaTime);
+    if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS)
+        camera.move(CameraMovement::Right, deltaTime);
+    if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
+        glfwSetWindowShouldClose(window, true);
+
+    const float lookSpeed = toRadians(90.0f) * deltaTime;
+    if (glfwGetKey(window, GLFW_KEY_LEFT) == GLFW_PRESS)
+        camera.yaw(-lookSpeed);
+    if (glfwGetKey(window, GLFW_KEY_RIGHT) == GLFW_PRESS)
+        camera.yaw(lookSpeed);
+    if (glfwGetKey(window, GLFW_KEY_UP) == GLFW_PRESS)
+        camera.pitch(lookSpeed);
+    if (glfwGetKey(window, GLFW_KEY_DOWN) == GLFW_PRESS)
+        camera.pitch(-lookSpeed);
 }
 
 int main(void)
@@ -212,17 +237,22 @@ int main(void)
 		glUniformMatrix4fv(projLoc, 1, GL_FALSE, projection.data());
 		glEnable(GL_DEPTH_TEST);
 
+		Camera camera(math::Vec3{0.0f, 0.0f, 3.0f}, math::Vec3{0.0f, 0.0f, 0.0f});
+
+		float lastFrame = 0.0f;
 		while (!window.shouldClose()) {
+			float currentFrame = (float)glfwGetTime();
+			float deltaTime = currentFrame - lastFrame;
+			lastFrame = currentFrame;
+
 			window.pollEvents();
+			processInput(window.getWindow(), camera, deltaTime);
 			glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
 			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 			shader.use();
 
-			float radius = 3.0f;
-			float camX = std::sin((float)glfwGetTime()) * radius;
-			float camZ = std::cos((float)glfwGetTime()) * radius;
-			math::Mat4 view = math::lookAt(math::Vec3{camX, 0.0f, camZ}, math::Vec3{0.0f, 0.0f, 0.0f}, math::Vec3{0.0f, 1.0f, 0.0f});
+			math::Mat4 view = camera.viewMatrix();
 			glUniformMatrix4fv(viewLoc, 1, GL_FALSE, view.data());
 
 			glBindVertexArray(VAO);
